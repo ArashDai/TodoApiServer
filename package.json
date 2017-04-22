@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ArashDai/simpleserver.git"
+    "url": "git+https://github.com/ArashDai/TodoApiServer"
   },
   "author": "Arash Dai",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ArashDai/simpleserver/issues"
+    "url": "https://github.com/ArashDai/TodoApiServer/issues"
   },
-  "homepage": "https://github.com/ArashDai/simpleserver#readme",
+  "homepage": "https://github.com/ArashDai/TodoApiServer#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
