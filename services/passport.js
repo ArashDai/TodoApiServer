@@ -12,12 +12,12 @@ const localLogin = new LocalStrategy({usernameField:'email'},function(email,pass
         if (err) return done(err);
         if(!user) return done(null,false);
 
-        user.comparePassword(password, function(err, isMatch){
-            if(err) return done(err)
-            if(!isMatch) return done(null, false);
-
-            return done(null, user);
-        });
+        // check to see if password is correct
+        // user.comparePassword(password, function(err, isMatch){
+        //     if(err) return done(err)
+        //     if(!isMatch) return done(null, false);
+        //     return done(null, user);
+        //});
     });
 });
 

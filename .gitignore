@@ -2,6 +2,4 @@ node_modules
 config.js
 config.json
 config/config.json
-config/configuration.json
-configuration.json
 .env

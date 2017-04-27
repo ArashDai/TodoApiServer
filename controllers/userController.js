@@ -1,11 +1,12 @@
 const User = require('../models').User;
-// update this controller, create signin controller
+// update this controller, create signin controller or use auth controller
 //bcrypt salt n hash password
 module.exports = {
     create(req, res) {
+        //first need to check for existing user! check for email in use!
+        
         return User
-        .create({
-            userId: req.body.userId,
+        .findOrCreate({where:{email:req.body.email}},{
             email: req.body.email,
             password: req.body.password,
             schedule: req.body.schedule,
@@ -14,7 +15,7 @@ module.exports = {
             completedTasks: req.body.completedTasks,
             completedGoals: req.body.completedGoals
         })
-        .then( todo => res.status(201).send(todo))
+        .then( user => res.status(201).send(user))
         .catch( error => res.status(400).send(error))
     },
     retrieve(req, res) {

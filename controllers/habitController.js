@@ -1,40 +1,47 @@
+const Habit = require('../models').Habit;
 const Task = require('../models').Task;
-const TaskItem = require('../models').TaskItem;
 const Goal = require('../models').Goal;
 
 module.exports = {
         create(req,res){
-            return Goal
+            return Habit
             .create({
                 creator: req.body.creator,
-                goalId: UUIDV4(),
+                habitId: UUIDV4(),
                 name: req.body.name,
                 description: req.body.description,
-                tasks: req.body.tasks
+                tasks: req.body.tasks,
+                goals: req.body.goals,
+                priority: req.body.priority,
+                frequency: req.body.frequency,
+                active: req.body.active
             })
-            .then( goal => res.status(201).send(goal))
+            .then( habit => res.status(201).send(habit))
             .catch( error => res.status(400).send(error));
         },
         list(req, res){
-            return Goal
+            return Habit
             .findAll({
                 include:[{
-                    model: Task,
-                    as: 'tasks'
+                    model: Habit,
+                    as: 'habits'
                 }]
             })
         },
         retrieve(req,res){
-            return Goal
-            .findById(req.params.goalId,{
+            return Habit
+            .findById(req.params.habitId,{
                 include:[{
                     model: Task,
                     as: 'tasks'
+                },{
+                    model: Goal,
+                    as: 'goals'
                 }]
             })
-            .then( goal => {
-                if(!goal)  return res.status(404).send({message:'Goal Not Found'});
-                res.status(200).send(goal);
+            .then( habit => {
+                if(!habit)  return res.status(404).send({message:'Habit Not Found'});
+                res.status(200).send(habit);
             })
             .catch( error => res.status(400).send(error));
         },
@@ -44,6 +51,9 @@ module.exports = {
                 include:[{
                     model:Task,
                     as:'tasks'
+                },{
+                    model: Goal,
+                    as: 'goals'
                 }]
             })
             .then( goal => {

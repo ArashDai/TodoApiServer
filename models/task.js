@@ -5,11 +5,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     }, 
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    priority: {
+      type: DataTypes.TEXT,
       allowNull: true,
     },
   
@@ -30,6 +34,12 @@ module.exports = (sequelize, DataTypes) => {
         })
       },
     },
+    hooks: {
+      beforeCreate: function(task, options, cb) { 
+        task.taskId = UUIDV4(); 
+        return cb(null, options);
+      }
+    }
   });
   return Task;
 };

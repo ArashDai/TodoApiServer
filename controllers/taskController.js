@@ -6,7 +6,7 @@ module.exports = {
             return Task
             .create({
                 creator: req.body.creator,
-                taskId: req.body.taskId,
+                taskId: UUIDV4(),
                 name: req.body.name,
                 description: req.body.description,
                 taskItems: req.body.taskItems

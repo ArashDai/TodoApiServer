@@ -5,27 +5,44 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     }, 
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
-  
-  }, {
-    classMethods: {
-      associate: (models) => {
-        Goal.hasMany(models.Task,{
-            foreignKey: 'todoId',
-            as: 'tasks'
-        })
-        Goal.hasOne(models.User,{
-            foreignKey: 'userId',
-            as:'creator'
-        })
-      },
+    daysActive: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
+    priority: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+  },{
+      classMethods: {
+        associate: (models) => {
+          Goal.hasMany(models.Task,{
+              foreignKey: 'todoId',
+              as: 'tasks'
+          })
+          Goal.hasOne(models.User,{
+              foreignKey: 'userId',
+              as:'creator'
+          })
+        },
+      },
+      hooks: {
+        beforeCreate: function(goal, options, cb) { 
+          goal.goalId = UUIDV4(); 
+          return cb(null, options);
+        }
+      }
   });
   return Goal;
 };

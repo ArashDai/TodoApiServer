@@ -1,6 +1,7 @@
 const User = require('../models').User;
 const jwt = require('jwt-simple');
-//const config = require('../config');
+const config = require('../config');
+const bcrypt  = require('bcrypt-nodejs');
 
 function tokenGen(user){
     const timestamp = new Date().getTime();
@@ -23,16 +24,28 @@ exports.signup = function(req,res,next){
         if (err) return next(err); 
         //if a user with this email does exist return an error
         if(existingUser) {
-            return res.status(422).send({error:'Email in use'}); //unprocessable entitiy you gave us bad data
+            return res.status(422).send({error:'Email in use'}); 
         }
         //if a user with this email does not exist, create record and save user
-        const user = new User({
-            email:email,
-            password:password //salt and hash password here then pass it to the user controller to create and save the user
-        });
-        user.save(function(err){
+        //salt and hash password here then pass it to the user controller to create and save the user
+        bcrypt.genSalt(10, function(err, salt){
+            if(err) return next(err); 
+            bcrypt.hash(req.body.password, salt, null, function(err, hash){
             if(err) return next(err);
-            res.json({ token:tokenGen(user) });
+            req.body.password = hash;
+            next(); 
+            })
         });
+
+        User.create(req)
+        //
+        // const user = new User({
+        //     email:email,
+        //     password:password 
+        // });
+        // user.save(function(err){
+        //     if(err) return next(err);
+        //     res.json({ token:tokenGen(user) });
+        // });
     });
 }

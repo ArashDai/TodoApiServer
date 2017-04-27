@@ -30,6 +30,12 @@ module.exports = (sequelize, DataTypes) => {
         });
       },
     },
+    hooks: {
+      beforeCreate: function(taskItem, options, cb) { 
+        taskItem.taskItemId = UUIDV4(); 
+        return cb(null, options);
+      }
+    }
   });
   return TaskItem;
 };
