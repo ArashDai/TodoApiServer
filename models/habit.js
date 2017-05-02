@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Habit = sequelize.define('Habit', {
     habitId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       allowNull: true,
     },
     name: {
@@ -49,8 +49,8 @@ module.exports = (sequelize, DataTypes) => {
           as: 'goal'
         })
         Habit.hasOne(models.User,{
-            foreignKey: 'userId',
-            as: 'creator'
+          foreignKey: 'userId',
+          as: 'creator'
         })
       },
     },

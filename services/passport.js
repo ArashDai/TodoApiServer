@@ -5,22 +5,21 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
 
-//Create local strategy not sure if this is will work with postgres
-const localLogin = new LocalStrategy({usernameField:'email'},function(email,password,done){
-    //Verify username and password
-    User.findOne({where:{email}},function(err,user){
-        if (err) return done(err);
-        if(!user) return done(null,false);
-
-        // check to see if password is correct
-        // user.comparePassword(password, function(err, isMatch){
-        //     if(err) return done(err)
-        //     if(!isMatch) return done(null, false);
-        //     return done(null, user);
-        //});
-    });
+const localLogin = new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'pass'
+  },
+  (username, password, done) => {
+    log.debug("Login process:", username);
+    return User.findOne({where:{email,password}})
+      .then((result)=> {
+        return done(null, result);
+      })
+      .catch((err) => {
+        log.error("/login: " + err);
+        return done(null, false, {message:'Wrong username or password'});
+      });
 });
-
 
 //setup options for jwt strategy
 const jwtOptions = {
@@ -33,15 +32,9 @@ const jwtLogin = new JwtStrategy(jwtOptions,function(payload, done){
     //check payload to see if the userID is in the database
     //if it is call 'done' with that user
     //otherwise call done without the user object
-
-    User.findById(payload.sub, function(err, user){
-        if(err) return done(err,false);
-        if(user) {
-            done(null,user);
-        } else {
-            done(null,false);
-        }
-    });
+    User.findOne({where:{id:payload.sub}})
+    .then(user => done(null, user))
+    .catch(err => done(null, false, {message:'sorry please login'}))
 });
 
 //tell passport to use this strategy

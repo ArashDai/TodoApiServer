@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Goal = sequelize.define('Goal', {
     goalId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     name: {

@@ -29,14 +29,13 @@ exports.signup = function(req,res,next){
         //if a user with this email does not exist, create record and save user
         //salt and hash password here then pass it to the user controller to create and save the user
         bcrypt.genSalt(10, function(err, salt){
-            if(err) return next(err); 
-            bcrypt.hash(req.body.password, salt, null, function(err, hash){
+        if(err) return next(err); 
+        bcrypt.hash(user.password, salt, null, function(err, hash){
             if(err) return next(err);
-            req.body.password = hash;
+            user.password = hash;
             next(); 
-            })
-        });
-
+        })
+    });
         User.create(req)
         //
         // const user = new User({

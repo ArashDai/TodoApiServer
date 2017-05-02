@@ -12,7 +12,7 @@ function encryptPassword(password,callback){
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     userId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       allowNull: false,
     }, 
     email: {
@@ -48,6 +48,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     }
   },{
+      classMethods: {
+        associate: (models) => {
+          User.hasMany(models.Task,{
+              foreignKey: 'taskId',
+              as: 'tasks'
+          })
+          User.hasMany(models.Goal,{
+              foreignKey: 'goalId',
+              as:'goals'
+          })
+        },
+      },
       hooks: {
         beforeCreate: function(user, options, cb) {
           debug('Info: '+'Storing the password');  

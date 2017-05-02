@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const TaskItem = sequelize.define('TaskItem', {
     taskItemId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       allowNull: false,
     }, 
     name: {
@@ -37,5 +37,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
+
   return TaskItem;
 };

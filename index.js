@@ -5,16 +5,19 @@ const morgan = require('morgan');
 const router = require('./router');
 const cors = require('cors');
 const dotenv = require('dotenv').config();
+const db = require('./models/index')
 
 const app = express();
 
-console.log('.env',process.env.DATABASE_URL)
-
+console.log('.env', process.env.DATABASE_URL)
+//db.sequelize.sync(function(err){console.log(err)});
 //App setup
 app.use(morgan('combined'));
 app.use(cors());//use cors to specify access
-app.use(bodyParser.json({ type:'*/*' }));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
+//app.use(bodyParser.json({ type:'*/*' }));
+
 router(app);
 
 //Server setup

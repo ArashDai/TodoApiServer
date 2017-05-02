@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Task = sequelize.define('Task', {
     taskId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       allowNull: true,
     },
     name: {
@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
         })
         Task.hasOne(models.User,{
             foreignKey: 'userId',
-            as: 'creator'
+            as: 'creator',
+            onDelete: 'CASCADE' 
         })
         Task.belongsTo(models.Goal,{
             foreignKey: 'goalId',

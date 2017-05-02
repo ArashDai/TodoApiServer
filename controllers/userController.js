@@ -1,21 +1,29 @@
 const User = require('../models').User;
 // update this controller, create signin controller or use auth controller
-//bcrypt salt n hash password
+
+function tokenGen(user){
+    const timestamp = new Date().getTime();
+    return jwt.encode({ sub:user.id, iat:timestamp }, config.secret);
+}
 module.exports = {
-    create(req, res) {
-        //first need to check for existing user! check for email in use!
+    signup(req, res) {
+        console.log('REQUEST!!!!!!!!!!!',req)
+        const email = req.body.email;
+        const password = req.body.password;
+
+        if(!email || !password)  return res.status(422).send({error:'You must provide both Email and Password'});
         
         return User
-        .findOrCreate({where:{email:req.body.email}},{
-            email: req.body.email,
-            password: req.body.password,
+        .findOrCreate({where:{email, password},defaults:{
+            email: email,
+            password: password,
             schedule: req.body.schedule,
             activeGoals: req.body.activeGoals,
             activeTasks: req.body.activeTasks,
             completedTasks: req.body.completedTasks,
             completedGoals: req.body.completedGoals
-        })
-        .then( user => res.status(201).send(user))
+        }})
+        .then( user => res.status(201).send.json({ token:tokenGen(user) }))
         .catch( error => res.status(400).send(error))
     },
     retrieve(req, res) {
