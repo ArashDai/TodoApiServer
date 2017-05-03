@@ -1,81 +1,42 @@
-const bcrypt = require('bcrypt-nodejs');
-
-function encryptPassword(password,callback){
-    bcrypt.genSalt(10,function(err, salt){
-      if(err) callback(err);
-      bcrypt.hash(password,salt,function(err, hash){
-        return callback(err, hash)
-      });
-    });
-}
-
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    userId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    }, 
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    }, 
-    schedule: {
-      type: DataTypes.JSON,
-      allowNull: true,
-    },
-    activeTasks: {
-      type: DataTypes.ARRAY(DataTypes.DECIMAL),
-      allowNull: true,
-    },
-    activeGoals: {
-      type: DataTypes.ARRAY(DataTypes.DECIMAL),
-      allowNull: true,
-    },
-    completedTasks: {
-      type: DataTypes.ARRAY(DataTypes.DECIMAL),
-      allowNull: true,
-    },
-    completedGoals: {
-      type: DataTypes.ARRAY(DataTypes.DECIMAL),
-      allowNull: true,
-    }
-  },{
-      classMethods: {
-        associate: (models) => {
-          User.hasMany(models.Task,{
-              foreignKey: 'taskId',
-              as: 'tasks'
-          })
-          User.hasMany(models.Goal,{
-              foreignKey: 'goalId',
-              as:'goals'
-          })
-        },
-      },
-      hooks: {
-        beforeCreate: function(user, options, cb) {
-          debug('Info: '+'Storing the password');  
-          user.userId = UUIDV4(); 
-         
-          encryptPassword(user.password, function(err, hash) {
-            if (err) return cb(err);
-            debug('Info: ' + 'getting ' + encrypted);
-            user.password = hash;
-            debug('Info: ' + 'password now is: ' + model.password);
-            return cb(null, options);
-          });
-        }
-
-      }
-    }
-  );
-  return User;
-};
+'use strict';
+module.exports = function(sequelize, DataTypes) {
+    var user = sequelize.define('user', {
+          username: DataTypes.STRING,
+          email: DataTypes.STRING,
+          password: DataTypes.STRING,
+          schedule: DataTypes.JSON,
+          activeTasks: DataTypes.ARRAY(DataTypes.DECIMAL),
+          activeGoals: DataTypes.ARRAY(DataTypes.DECIMAL),
+          completedTasks: DataTypes.ARRAY(DataTypes.DECIMAL),
+          completedGoals: DataTypes.ARRAY(DataTypes.DECIMAL)
+                  }, {
+                    classMethods: {
+                      associate: function(models) {
+                        // associations can be defined here
+                        user.hasMany(models.task,{
+                            foreignKey: 'taskId',
+                            as: 'tasks'
+                        })
+                        user.hasMany(models.goal,{
+                            foreignKey: 'goalId',
+                            as:'goals'
+                        })
+                      }
+                    },
+                    hooks: {
+                      beforeCreate: function(user, options, cb) {
+                        debug('Info: '+'Storing the password');  
+                        //user.userId = UUIDV4(); 
+                      
+                        encryptPassword(user.password, function(err, hash) {
+                          if (err) return cb(err);
+                          debug('Info: ' + 'getting ' + encrypted);
+                          user.password = hash;
+                          debug('Info: ' + 'password now is: ' + model.password);
+                          return cb(null, options);
+                        });
+                      }
+                    }                    
+                  });
+                return user;
+              };

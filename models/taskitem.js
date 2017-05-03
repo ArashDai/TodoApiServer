@@ -1,42 +1,26 @@
-module.exports = (sequelize, DataTypes) => {
-  const TaskItem = sequelize.define('TaskItem', {
-    taskItemId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    }, 
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    }, 
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    duration: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    attachments: {
-      type: DataTypes.JSON,
-      allowNull: true,
-    },
-  
+'use strict';
+module.exports = function(sequelize, DataTypes) {
+  var taskItem = sequelize.define('taskItem', {
+    name: DataTypes.STRING,
+    description: DataTypes.STRING,
+    duration: DataTypes.INTEGER,
+    attachments: DataTypes.JSON
   }, {
     classMethods: {
-      associate: (models) => {
-        TaskItem.belongsTo(models.Task,{
+      associate: function(models) {
+        // associations can be defined here
+        taskItem.belongsTo(models.task,{
           foreignKey: 'taskId',
           onDelete: 'CASCADE'
         });
-      },
-    },
-    hooks: {
-      beforeCreate: function(taskItem, options, cb) { 
-        taskItem.taskItemId = UUIDV4(); 
-        return cb(null, options);
       }
-    }
+    },
+    //  hooks: {
+    //   beforeCreate: function(taskItem, options, cb) { 
+    //     taskItem.taskItemId = UUIDV4(); 
+    //     return cb(null, options);
+    //   }
+    // }
   });
-
-  return TaskItem;
+  return taskItem;
 };

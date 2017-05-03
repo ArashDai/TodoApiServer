@@ -1,65 +1,36 @@
-module.exports = (sequelize, DataTypes) => {
-  const Habit = sequelize.define('Habit', {
-    habitId: {
-      type: DataTypes.UUID,
-      allowNull: true,
-    },
-    name: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    }, 
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    priority: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    frequency: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    active: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
-    daysActive: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    streaks: {
-      type: DataTypes.ARRAY(DataTypes.ARRAY),
-      allowNull: true,
-    },
-    landmarks: {
-      type: DataTypes.ARRAY(DataTypes.TEXT),
-      allowNull: true,
-    },
-  
+'use strict';
+module.exports = function(sequelize, DataTypes) {
+  var habit = sequelize.define('habit', {
+    name: DataTypes.STRING,
+    description: DataTypes.STRING,
+    priority: DataTypes.STRING,
+    frequency: DataTypes.STRING,
+    active: DataTypes.BOOLEAN,
+    daysActive: DataTypes.INTEGER,
+    streaks: DataTypes.ARRAY,
+    landmarks: DataTypes.STRING
   }, {
     classMethods: {
-      associate: (models) => {
-        Habit.hasMany(models.Task,{
+      associate: function(models) {
+        //associations can be defined here
+        habit.hasMany(models.task,{
           foreignKey: 'taskId',
-          as: 'task'
+          as: 'tasks'
         })
-        Habit.hasMany(models.Goal,{
+        habit.hasMany(models.goal,{
           foreignKey: 'goalId',
-          as: 'goal'
+          as: 'goals'
         })
-        Habit.hasOne(models.User,{
+        habit.hasOne(models.user,{
           foreignKey: 'userId',
           as: 'creator'
         })
-      },
-    },
-    hooks: {
-        beforeCreate: function(habit, options, cb) { 
-          habit.habitId = UUIDV4(); 
-          return cb(null, options);
-        }
-      }
+      }},
+      // hooks: {
+      //   beforeCreate: function(habit, options, cb) {  
+      //     return cb(null, options);
+      //   }
+    //}
   });
-  return Habit;
+  return habit;
 };

@@ -1,48 +1,29 @@
-module.exports = (sequelize, DataTypes) => {
-  const Goal = sequelize.define('Goal', {
-    goalId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
-    name: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    }, 
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    daysActive: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    active: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
-    priority: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-  },{
-      classMethods: {
-        associate: (models) => {
-          Goal.hasMany(models.Task,{
+'use strict';
+module.exports = function(sequelize, DataTypes) {
+  var goal = sequelize.define('goal', {
+    name: DataTypes.STRING,
+    description: DataTypes.STRING,
+    daysActive: DataTypes.INTEGER,
+    active: DataTypes.BOOLEAN,
+    priority: DataTypes.STRING
+  }, {
+    classMethods: {
+      associate: function(models) {
+          goal.hasMany(models.task,{
               foreignKey: 'todoId',
               as: 'tasks'
           })
-          Goal.hasOne(models.User,{
+          goal.hasOne(models.user,{
               foreignKey: 'userId',
               as:'creator'
           })
-        },
-      },
-      hooks: {
-        beforeCreate: function(goal, options, cb) { 
-          goal.goalId = UUIDV4(); 
-          return cb(null, options);
-        }
       }
-  });
-  return Goal;
+    },
+  //   hooks: {
+  //       beforeCreate: function(goal, options, cb) { 
+  //         return cb(null, options);
+  //       }
+  //     }
+   });
+  return goal;
 };
