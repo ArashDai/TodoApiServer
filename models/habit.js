@@ -7,30 +7,26 @@ module.exports = function(sequelize, DataTypes) {
     frequency: DataTypes.STRING,
     active: DataTypes.BOOLEAN,
     daysActive: DataTypes.INTEGER,
-    streaks: DataTypes.ARRAY,
+    streaks: DataTypes.ARRAY(DataTypes.DECIMAL),
     landmarks: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
-        //associations can be defined here
-        habit.hasMany(models.task,{
+        // associations can be defined here
+        habit.hasMany(models.Task,{
           foreignKey: 'taskId',
           as: 'tasks'
         })
-        habit.hasMany(models.goal,{
+        habit.hasMany(models.Goal,{
           foreignKey: 'goalId',
           as: 'goals'
         })
-        habit.hasOne(models.user,{
+        habit.hasOne(models.User,{
           foreignKey: 'userId',
           as: 'creator'
         })
-      }},
-      // hooks: {
-      //   beforeCreate: function(habit, options, cb) {  
-      //     return cb(null, options);
-      //   }
-    //}
+      }
+    }
   });
   return habit;
 };

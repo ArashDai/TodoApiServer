@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       streaks: {
-        type: Sequelize.ARRAY
+        type: Sequelize.ARRAY(Sequelize.DECIMAL)
       },
       landmarks: {
         type: Sequelize.STRING
