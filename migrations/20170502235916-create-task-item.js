@@ -8,6 +8,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      taskId: {
+        type:Sequelize.INTEGER,
+        onDelete:'CASCADE',
+        onUpdate: 'CASCADE'
+        // references: {
+        //   model: 'tasks',
+        //   key: 'id',
+        //   as: 'taskId',
+        //   onInsert: 'CASCADE'
+        // }
+      },
       name: {
         type: Sequelize.STRING
       },

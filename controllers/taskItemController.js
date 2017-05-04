@@ -1,11 +1,10 @@
-TaskItem = require('../models').TaskItem;
+TaskItem = require('../models').taskItem;
 
 module.exports = {
     create(req,res){
         return TaskItem
         .create({
-            taskItemId: UUIDV4(),
-            taskId: req.params.taskId,
+            taskId: req.body.taskId,
             name: req.body.name,
             description: req.body.description,
         })

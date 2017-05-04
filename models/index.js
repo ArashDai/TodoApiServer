@@ -8,7 +8,7 @@ const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable]); //issue is here process.env dotenv not working?
+  sequelize = new Sequelize(process.env[config.use_env_variable]); //issue is process.env dotenv not working.
 } else {
   sequelize = new Sequelize(
     config.database, config.username, config.password, config

@@ -12,11 +12,12 @@ module.exports = (app) => {
     app.get('/',requireAuth,(req,res) => {res.status(200).send({hello:'world'});});
     //app.post('/signin', requireSignin, userController.signin );
     app.post('/signup', userController.signup);
+    app.post('/signin', userController.signin);
     //make routes for goals and habits
     app.post('/api/tasks', taskController.create);
     app.get('/api/tasks', taskController.list);
     app.get('/api/tasks/:taskId', taskController.retrieve);
     app.put('/api/tasks/:taskId', taskController.update);
     app.delete('/api/tasks/:taskId', taskController.destroy);
-    app.post('/api/tasks/:taskId/taskItems',taskItemController.create);
+    app.post('/api/tasks/taskItems',taskItemController.create);
 }

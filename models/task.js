@@ -8,19 +8,19 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        Task.hasMany(models.taskItem,{
-          foreignKey: 'taskItemId',
-          as: 'taskItems'
+        task.hasMany(models.taskItem,{
+          onDelete:'CASCADE',
+          hooks:true
         })
-        Task.hasOne(models.user,{
-            foreignKey: 'userId',
-            as: 'creator',
-            onDelete: 'CASCADE' 
-        })
-        Task.belongsTo(models.goal,{
-            foreignKey: 'goalId',
-            onDelete: 'CASCADE'    
-        })
+       // task.hasOne(models.user,{
+       //     foreignKey: 'userId',
+       //     as: 'creator',
+       //     onDelete: 'CASCADE' 
+       // })
+        // task.belongsTo(models.goal,{
+        //     foreignKey: 'goalId',
+        //     onDelete: 'CASCADE'    
+        // })
       }
     },
     // hooks: {

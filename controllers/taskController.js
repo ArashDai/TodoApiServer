@@ -1,15 +1,15 @@
-const Task = require('../models').Task;
-const TaskItem = require('../models').TaskItem;
+const Task = require('../models').task;
+const TaskItem = require('../models').taskItem;
+
 
 module.exports = {
         create(req,res){
+            console.log('CREEEEAAAAAATE',req.body)
             return Task
             .create({
                 creator: req.body.creator,
-                taskId: UUIDV4(),
                 name: req.body.name,
                 description: req.body.description,
-                taskItems: req.body.taskItems
             })
             .then( task => res.status(201).send(task))
             .catch( error => res.status(400).send(error));
@@ -56,12 +56,12 @@ module.exports = {
         },
         destroy(req,res){
             return Task
-            .findById(req.params.taskId)
+            .findOne({where:{id:req.params.taskId}})
             .then( task => {
                 if(!task) return res.status(400).send({message:'Task Not Found'})
                 return task
                 .destroy()
-                .then(() => res.status(200))
+                .then(() => res.status(200).send({message:'TASK DELETED'}))
                 .catch( error => res.status(400).send(error));
             })
         }

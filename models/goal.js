@@ -9,14 +9,14 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-          goal.hasMany(models.task,{
-              foreignKey: 'todoId',
-              as: 'tasks'
-          })
-          goal.hasOne(models.user,{
-              foreignKey: 'userId',
-              as:'creator'
-          })
+          // goal.hasMany(models.task,{
+          //     foreignKey: 'taskId',
+          //     as: 'tasks'
+          // })
+        //  goal.hasOne(models.user,{
+        //      foreignKey: 'userId',
+        //      as:'creator'
+        //  })
       }
     },
   //   hooks: {

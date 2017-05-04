@@ -13,18 +13,18 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        habit.hasMany(models.Task,{
-          foreignKey: 'taskId',
-          as: 'tasks'
-        })
-        habit.hasMany(models.Goal,{
+        // habit.hasMany(models.task,{
+        //   foreignKey: 'taskId',
+        //   as: 'tasks'
+        // })
+        habit.hasMany(models.goal,{
           foreignKey: 'goalId',
           as: 'goals'
         })
-        habit.hasOne(models.User,{
-          foreignKey: 'userId',
-          as: 'creator'
-        })
+       // habit.hasOne(models.user,{
+       //   foreignKey: 'userId',
+       //   as: 'creator'
+       // })
       }
     }
   });

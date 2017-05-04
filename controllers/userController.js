@@ -1,4 +1,6 @@
-const User = require('../models').User;
+const User = require('../models').user;
+const jwt = require('jwt-simple');
+const config = require('../config');
 // update this controller, create signin controller or use auth controller
 
 function tokenGen(user){
@@ -10,25 +12,31 @@ module.exports = {
         console.log('REQUEST!!!!!!!!!!!',req)
         const email = req.body.email;
         const password = req.body.password;
-
         if(!email || !password)  return res.status(422).send({error:'You must provide both Email and Password'});
-        
+        //specify unique for email in .create() also something below this line is not working
         return User
-        .findOrCreate({where:{email, password},defaults:{
-            email: email,
-            password: password,
-            schedule: req.body.schedule,
-            activeGoals: req.body.activeGoals,
-            activeTasks: req.body.activeTasks,
-            completedTasks: req.body.completedTasks,
-            completedGoals: req.body.completedGoals
-        }})
-        .then( user => res.status(201).send.json({ token:tokenGen(user) }))
+        .create({email: email,
+                password: password})
+        .then( user => res.status(201).send({ token:tokenGen(User) }))
         .catch( error => res.status(400).send(error))
+    },
+    signin(req,res){
+        console.log('REQUESTTTTTTTTTTTTTT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',req.body)
+        return User
+        .findOne({where:{email:req.body.email}})
+        .then((user) => {
+            if(user && user.validatePassword(req.body.password)){
+                console.log('THIS IS SIGNIN')
+                res.status(201).send({ token:tokenGen(User)})
+            } else {
+                res.status(400).send({message:'wrong password'})
+            }
+        })
+        .catch(err => res.status(400).send({message:err}))
     },
     retrieve(req, res) {
         return User
-        .findById(req.params.userId)
+        .findById(req.params.id)
         .then(user => {
             if(!user){
                 return res.status(404).send({
@@ -41,7 +49,7 @@ module.exports = {
     },
     update(req, res) {
         return User
-        .findById(req.params.userId)
+        .findById(req.params.id)
         .then(user => {
             if (!user) {
                 return res.status(404).send({
@@ -57,7 +65,7 @@ module.exports = {
     },
     destroy(req, res) {
         return User
-        .findById(req.params.userId)
+        .findById(req.params.id)
         .then(user => {
             if (!user){
                 return res.status(400).send({
