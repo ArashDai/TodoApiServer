@@ -7,7 +7,7 @@ module.exports = {
             console.log('CREEEEAAAAAATE',req.body)
             return Task
             .create({
-                creator: req.body.creator,
+                goalId: req.body.goalId,
                 name: req.body.name,
                 description: req.body.description,
             })

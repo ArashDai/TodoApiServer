@@ -22,10 +22,11 @@ module.exports = function(sequelize, DataTypes) {
                 //     foreignKey: 'taskId',
                 //     as: 'tasks'
                 // })
-                // user.hasMany(models.goal,{
-                //     foreignKey: 'goalId',
-                //     as:'goals'
-                // })
+                user.hasMany(models.goal,{
+                      onDelete:'CASCADE',
+                      foreignKey:'creator',
+                      hooks:true
+                })
                 // user.hasMany(models.habit,{
                 //     foreignKey: 'habitId',
                 //     as:'habits'

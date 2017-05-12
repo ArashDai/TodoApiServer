@@ -17,6 +17,11 @@ module.exports = {
       priority: {
         type: Sequelize.STRING
       },
+      goalId: {
+        type: Sequelize.INTEGER,
+        onDelete:'CASCADE',
+       // onUpdate:'CASCADE'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

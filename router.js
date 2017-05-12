@@ -3,9 +3,10 @@ const passportService = require('./services/passport');
 
 const taskController = require('./controllers').taskController;
 const taskItemController = require('./controllers').taskItemController;
+const goalController = require('./controllers').goalController;
 const userController = require('./controllers').userController;
 const requireAuth = passport.authenticate('jwt', {session:false});
-const requireSignin = passport.authenticate('local',{session:false});
+const requireSignin = passport.authenticate('local', {session:false});
 
 
 module.exports = (app) => {
@@ -20,4 +21,6 @@ module.exports = (app) => {
     app.put('/api/tasks/:taskId', taskController.update);
     app.delete('/api/tasks/:taskId', taskController.destroy);
     app.post('/api/tasks/taskItems',taskItemController.create);
+    app.post('/api/goals', goalController.create);
+    app.delete('/api/goals/:goalId', goalController.destroy);
 }

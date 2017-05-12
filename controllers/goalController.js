@@ -1,13 +1,13 @@
 const Task = require('../models').Task;
 const TaskItem = require('../models').TaskItem;
-const Goal = require('../models').Goal;
+const Goal = require('../models').goal;
 
 module.exports = {
         create(req,res){
             return Goal
             .create({
                 creator: req.body.creator,
-                goalId: UUIDV4(),
+                goalId: req.body.goalId,
                 name: req.body.name,
                 description: req.body.description,
                 tasks: req.body.tasks
@@ -57,12 +57,12 @@ module.exports = {
         },
         destroy(req,res){
             return Goal
-            .findById(req.params.goalId)
+            .findOne({where:{id:req.params.goalId}})
             .then( goal => {
                 if(!goal) return res.status(400).send({message:'Goal Not Found'})
                 return goal
                 .destroy()
-                .then(() => res.status(200))
+                .then(() => res.status(200).send({message:'Goal Deleted Successfully'}))
                 .catch( error => res.status(400).send(error));
             })
         }

@@ -3,7 +3,8 @@ module.exports = function(sequelize, DataTypes) {
   var task = sequelize.define('task', {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    priority: DataTypes.STRING
+    priority: DataTypes.STRING,
+    goalId:DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
@@ -17,18 +18,13 @@ module.exports = function(sequelize, DataTypes) {
        //     as: 'creator',
        //     onDelete: 'CASCADE' 
        // })
-        // task.belongsTo(models.goal,{
-        //     foreignKey: 'goalId',
-        //     onDelete: 'CASCADE'    
-        // })
+        task.belongsTo(models.goal,{
+            foreignKey: 'goalId',
+            onDelete: 'CASCADE'    
+        })
       }
     },
-    // hooks: {
-    //   beforeCreate: function(task, options, cb) { 
-    //     task.taskId = UUIDV4(); 
-    //     return cb(null, options);
-    //   }
-    // }
+
   });
   return task;
 };

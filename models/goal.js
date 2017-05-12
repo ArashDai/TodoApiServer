@@ -5,25 +5,22 @@ module.exports = function(sequelize, DataTypes) {
     description: DataTypes.STRING,
     daysActive: DataTypes.INTEGER,
     active: DataTypes.BOOLEAN,
-    priority: DataTypes.STRING
+    priority: DataTypes.STRING,
+    creator:DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
-          // goal.hasMany(models.task,{
-          //     foreignKey: 'taskId',
-          //     as: 'tasks'
-          // })
-        //  goal.hasOne(models.user,{
-        //      foreignKey: 'userId',
-        //      as:'creator'
-        //  })
+          goal.hasMany(models.task,{
+              onDelete:'CASCADE',
+              foreignKey:'goalId',
+              hooks:true
+          })
+         goal.belongsTo(models.user,{
+              foreignKey: 'creator',
+              onDelete: 'CASCADE'
+         })
       }
-    },
-  //   hooks: {
-  //       beforeCreate: function(goal, options, cb) { 
-  //         return cb(null, options);
-  //       }
-  //     }
+    }
    });
   return goal;
 };

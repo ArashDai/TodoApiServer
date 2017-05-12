@@ -1,7 +1,6 @@
 const User = require('../models').user;
 const jwt = require('jwt-simple');
 const config = require('../config');
-// update this controller, create signin controller or use auth controller
 
 function tokenGen(user){
     const timestamp = new Date().getTime();
@@ -9,7 +8,6 @@ function tokenGen(user){
 }
 module.exports = {
     signup(req, res) {
-        console.log('REQUEST!!!!!!!!!!!',req)
         const email = req.body.email;
         const password = req.body.password;
         if(!email || !password)  return res.status(422).send({error:'You must provide both Email and Password'});
@@ -21,7 +19,6 @@ module.exports = {
         .catch( error => res.status(400).send(error))
     },
     signin(req,res){
-        console.log('REQUESTTTTTTTTTTTTTT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',req.body)
         return User
         .findOne({where:{email:req.body.email}})
         .then((user) => {

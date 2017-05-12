@@ -17,10 +17,10 @@ module.exports = function(sequelize, DataTypes) {
         //   foreignKey: 'taskId',
         //   as: 'tasks'
         // })
-        habit.hasMany(models.goal,{
-          foreignKey: 'goalId',
-          as: 'goals'
-        })
+        // habit.hasMany(models.goal,{
+        //   foreignKey: 'goalId',
+        //   as: 'goals'
+        // })
        // habit.hasOne(models.user,{
        //   foreignKey: 'userId',
        //   as: 'creator'
