@@ -5,12 +5,13 @@ const taskController = require('./controllers').taskController;
 const taskItemController = require('./controllers').taskItemController;
 const goalController = require('./controllers').goalController;
 const userController = require('./controllers').userController;
-const requireAuth = passport.authenticate('jwt', {session:false});
-const requireSignin = passport.authenticate('local', {session:false});
+
+const requireAuth = passport.authenticate('jwt', {session:false});//this is not working
+const requireSignin = passport.authenticate('local', {session:false});//Im assuming this does not work either need to fix passport
 
 
 module.exports = (app) => {
-    app.get('/',requireAuth,(req,res) => {res.status(200).send({hello:'world'});});
+    app.get('/', requireAuth, (req,res) => {res.status(200).send({message:'hello world'});});
     //app.post('/signin', requireSignin, userController.signin );
     app.post('/signup', userController.signup);
     app.post('/signin', userController.signin);
@@ -23,4 +24,5 @@ module.exports = (app) => {
     app.post('/api/tasks/taskItems',taskItemController.create);
     app.post('/api/goals', goalController.create);
     app.delete('/api/goals/:goalId', goalController.destroy);
+    //add routes for creating habits
 }
